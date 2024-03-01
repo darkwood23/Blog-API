@@ -22,8 +22,8 @@ module.exports.write_Posts = asyncHandler( async (req, res, next) => {
             return
         } else {
             post = new Post({
-                title: req.headers['POST-TITLE'],
-                text: req.headers['POST-TEXT'],
+                title: req.body.postTitle,
+                text: req.body.postText,
                 user: req.user,
                 comments: []
             })
@@ -45,7 +45,7 @@ module.exports.delete_posts = asyncHandler( async (req, res, next) => {
             return
         }
     })
-    await Post.findByIdAndDelete(req.headers['POST-ID']).exec()
+    await Post.findByIdAndDelete(req.params.id).exec()
     res.json({
         message: 'Message successfully deleted',
         status: 200
@@ -53,7 +53,7 @@ module.exports.delete_posts = asyncHandler( async (req, res, next) => {
 })
 
 module.exports.edit_posts = asyncHandler( async (req, res, next) => {
-    const exists = await Post.findById(req.headers['POST-ID']).exec()
+    const exists = await Post.findById(req.params.id).exec()
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if (err) {
             res.sendStatus(403)
@@ -62,13 +62,13 @@ module.exports.edit_posts = asyncHandler( async (req, res, next) => {
     })
     if(exists) {
         let post = new Post({
-            title: req.headers['TITLE'],
-            text: req.headers['TEXT'],
+            title: req.body.postTitle,
+            text: req.body.postText,
             user: req.user,
-            comments: req.headers['COMMENTS']
+            comments: req.body.comments
         })
 
-        await Post.findbyIdAndUpdate(req.headers['POST-ID'], post, {})
+        await Post.findbyIdAndUpdate(req.params.id, post, {})
 
         res.json({
             message: 'Post Updated Successfuly',
