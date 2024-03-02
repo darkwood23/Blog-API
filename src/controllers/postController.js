@@ -22,9 +22,9 @@ module.exports.write_Posts = asyncHandler( async (req, res, next) => {
             return
         } else {
             post = new Post({
-                title: req.body.postTitle,
-                text: req.body.postText,
-                user: req.user,
+                title: req.headers['Title'],
+                text: req.headers['Text'],
+                user: req.headers['User'],
                 comments: []
             })
             res.json({

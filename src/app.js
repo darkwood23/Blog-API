@@ -4,7 +4,7 @@ const catalogRouter = require("./catalog")
 
 require("dotenv").config()
 
-const mongoDb = process.env.LOG_IN
+const mongoDb = process.env.MONGO_LOGIN
 mongoose.connect(mongoDb)
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "mongo connection error"))

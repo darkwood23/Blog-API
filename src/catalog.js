@@ -6,7 +6,7 @@ const userController = require("./controllers/userController")
 
 function verifyToken(req, res, next) {
     // Get auth header value
-    const bearerHeader = req.headers['authorization']
+    const bearerHeader = req.headers['Authorization']
     // Check if bearer is undefined
     if(typeof bearerHeader !== 'undefined') {
         // Split at the space
@@ -24,9 +24,11 @@ function verifyToken(req, res, next) {
 
 router.get("/", postController.get_allPosts)
 
-router.post("/write-post/:id", verifyToken, postController.write_Posts)
+router.post("/write-post", verifyToken, postController.write_Posts)
 router.post("/edit-post/:id", verifyToken, postController.edit_posts)
 router.post("/delete-post/:id", verifyToken, postController.delete_posts)
 
-router.get("/create-user", userController.create_user)
+router.post("/create-user", userController.create_user)
 router.post('/log-in', userController.log_in_post)
+
+module.exports = router

@@ -8,4 +8,4 @@ const PostSchema = new Schema({
     comments: [ { type: String, required: true } ]
 })
 
-module.exports = Schema.model("Post", PostSchema)
+module.exports = mongoose.model("Post", PostSchema)
