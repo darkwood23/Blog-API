@@ -30,7 +30,7 @@ module.exports.log_in_post = asyncHandler ( async (req, res, next) => {
         password: req.headers['password']
     }
     
-    const userExists = await User.findOne({ username: user.username })
+    const userExists = await User.findOne({ username: user.username }).exec()
     
     if (userExists) {
         const correctPassword = checkPassword(user.password, userExists.password)

@@ -16,15 +16,16 @@ module.exports.get_allPosts = asyncHandler( async (req, res, next ) => {
 
 module.exports.write_Posts = asyncHandler( async (req, res, next) => {
     let post
+    let noErrors
     jwt.verify(req.token, "secretkey", (err, authData) => {
         if (err) {
             res.sendStatus(403)
             return
         } else {
             post = new Post({
-                title: req.headers['Title'],
-                text: req.headers['Text'],
-                user: req.headers['User'],
+                title: req.headers['title'],
+                text: req.headers['text'],
+                user: req.headers['user'],
                 comments: []
             })
             res.json({
@@ -33,9 +34,12 @@ module.exports.write_Posts = asyncHandler( async (req, res, next) => {
                 post,
                 status: 200
             })
+            noErrors = true
         }
     })
-    await post.save()
+    if(noErrors) {
+        await post.save()
+    }
 })
 
 module.exports.delete_posts = asyncHandler( async (req, res, next) => {
@@ -45,11 +49,19 @@ module.exports.delete_posts = asyncHandler( async (req, res, next) => {
             return
         }
     })
-    await Post.findByIdAndDelete(req.params.id).exec()
-    res.json({
-        message: 'Message successfully deleted',
-        status: 200
-    })
+    const postExists = await Post.findById(req.params.id)
+    
+    if (postExists) {
+
+        await Post.findByIdAndDelete(req.params.id).exec()
+        
+        res.json({
+            message: 'Message successfully deleted',
+            status: 200
+        })
+    } else {
+        res.sendStatus(404)
+    }
 })
 
 module.exports.edit_posts = asyncHandler( async (req, res, next) => {
