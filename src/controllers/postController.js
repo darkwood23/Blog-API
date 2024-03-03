@@ -65,7 +65,7 @@ module.exports.delete_posts = asyncHandler( async (req, res, next) => {
 })
 
 module.exports.edit_posts = asyncHandler( async (req, res, next) => {
-    const exists = await Post.findById(req.params.id).exec()
+    const exists = await Post.findById(req.params.id)
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if (err) {
             res.sendStatus(403)
@@ -74,13 +74,14 @@ module.exports.edit_posts = asyncHandler( async (req, res, next) => {
     })
     if(exists) {
         let post = new Post({
-            title: req.body.postTitle,
-            text: req.body.postText,
-            user: req.user,
-            comments: req.body.comments
+            _id: exists._id,
+            title: req.headers['title'],
+            text: req.headers['text'],
+            user: req.headers['user'],
+            comments: req.headers['comments']
         })
 
-        await Post.findbyIdAndUpdate(req.params.id, post, {})
+        await Post.findByIdAndUpdate(req.params.id, post, {}).exec()
 
         res.json({
             message: 'Post Updated Successfuly',
