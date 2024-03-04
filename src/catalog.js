@@ -3,6 +3,7 @@ const router = express.Router()
 
 const postController = require("./controllers/postController")
 const userController = require("./controllers/userController")
+const commentController = require("./controllers/commentController")
 
 function verifyToken(req, res, next) {
     // Get auth header value
@@ -30,5 +31,7 @@ router.post("/delete-post/:id", verifyToken, postController.delete_posts)
 
 router.post("/create-user", userController.create_user)
 router.post('/log-in', userController.log_in_post)
+
+router.post("/write-comments/:id", commentController.write_comments)
 
 module.exports = router

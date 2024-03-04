@@ -26,7 +26,6 @@ module.exports.write_Posts = asyncHandler( async (req, res, next) => {
                 title: req.headers['title'],
                 text: req.headers['text'],
                 user: req.headers['user'],
-                comments: []
             })
             res.json({
                 message: 'Post Created ...',
@@ -78,7 +77,6 @@ module.exports.edit_posts = asyncHandler( async (req, res, next) => {
             title: req.headers['title'],
             text: req.headers['text'],
             user: req.headers['user'],
-            comments: req.headers['comments']
         })
 
         await Post.findByIdAndUpdate(req.params.id, post, {}).exec()
