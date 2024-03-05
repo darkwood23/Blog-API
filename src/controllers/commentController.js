@@ -3,12 +3,12 @@ const asyncHandler = require("express-async-handler")
 const Post = require("../models/post")
 
 module.exports.write_comments = asyncHandler( async (req, res, next) => {
-    const postExists = await Post.findById(req.headers['post']).exec()
+    const postExists = await Post.findById(req.body.post).exec()
 
     const comment = new Comment({
-        user: req.headers['user'],
-        text: req.headers['text'],
-        post: req.headers['post']
+        user: req.body.user,
+        text: req.body.text,
+        post: req.body.post
     })
 
     if (postExists) {

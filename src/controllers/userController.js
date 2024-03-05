@@ -6,8 +6,8 @@ require("dotenv").config()
 
 module.exports.create_user = asyncHandler ( async (req, res, next) => {
     const user = new User({
-        username: req.headers['username'],
-        password: genPassword(req.headers['password'])
+        username: req.body.username,
+        password: genPassword(req.body.password)
     })
 
     const userExists = await User.findOne({ username: user.username })
@@ -26,8 +26,8 @@ module.exports.create_user = asyncHandler ( async (req, res, next) => {
 // module.exports.log_in_post = passport.authenticate('local')
 module.exports.log_in_post = asyncHandler ( async (req, res, next) => {
     const user = {
-        username: req.headers['username'],
-        password: req.headers['password']
+        username: req.body.username,
+        password: req.body.password
     }
     
     const userExists = await User.findOne({ username: user.username }).exec()

@@ -23,9 +23,9 @@ module.exports.write_Posts = asyncHandler( async (req, res, next) => {
             return
         } else {
             post = new Post({
-                title: req.headers['title'],
-                text: req.headers['text'],
-                user: req.headers['user'],
+                title: req.body.title,
+                text: req.body.text,
+                user: req.body.user,
             })
             res.json({
                 message: 'Post Created ...',
@@ -74,9 +74,9 @@ module.exports.edit_posts = asyncHandler( async (req, res, next) => {
     if(exists) {
         let post = new Post({
             _id: exists._id,
-            title: req.headers['title'],
-            text: req.headers['text'],
-            user: req.headers['user'],
+            title: req.body.title,
+            text: req.body.text,
+            user: req.body.user,
         })
 
         await Post.findByIdAndUpdate(req.params.id, post, {}).exec()
